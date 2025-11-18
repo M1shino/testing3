@@ -7,13 +7,18 @@ import { useApi } from "@/lib/utils/useApi";
 type Albums = Awaited<ReturnType<typeof GET>>;
 
 export default function Home() {
-    const { data: albums, isLoading } = useApi<Albums>("/api/albums");
+    const { data: albums, isLoading, error } = useApi<Albums>("/api/albums");
 
     return (
         <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
             <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-                <p className="text-4xl font-bold">Spotify</p>
+                <header>
+                    <p data-cy="title" className="text-4xl font-bold">
+                        Spotify
+                    </p>
+                </header>
                 {isLoading && <p>Loading...</p>}
+                {error && <p>Failed to load albums</p>}
 
                 <div className="grid grid-cols-2 gap-4">
                     {albums?.map((album) => (
