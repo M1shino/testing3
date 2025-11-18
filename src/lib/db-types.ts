@@ -5,33 +5,32 @@
 
 import type { ColumnType } from "kysely";
 
-export type Generated<T> =
-    T extends ColumnType<infer S, infer I, infer U>
-        ? ColumnType<S, I | undefined, U>
-        : ColumnType<T, T | undefined, T>;
+export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
 export interface Albums {
-    author_id: number;
-    id: Generated<number>;
-    name: string;
-    release_date: number;
+  author_id: number;
+  id: Generated<number>;
+  name: string;
+  release_date: number;
 }
 
 export interface Authors {
-    bio: string | null;
-    id: Generated<number>;
-    name: string;
+  bio: string | null;
+  id: Generated<number>;
+  name: string;
 }
 
 export interface Songs {
-    album_id: number;
-    duration: number;
-    id: Generated<number>;
-    name: string;
+  album_id: number;
+  duration: number;
+  id: Generated<number>;
+  name: string;
 }
 
 export interface DB {
-    albums: Albums;
-    authors: Authors;
-    songs: Songs;
+  albums: Albums;
+  authors: Authors;
+  songs: Songs;
 }
