@@ -80,7 +80,7 @@ describe("Basic Checks", () => {
 
     it("nagigates back to home page", () => {
         cy.visit("/album/1");
-        cy.get('[data-cy="kukaj"]').contains("Spotify").click();
+        cy.get("a").contains("Spotify").click();
         cy.url().should("eq", Cypress.config().baseUrl + "/");
     });
 });
@@ -163,5 +163,20 @@ describe("API checks", () => {
         cy.contains("Loading...").should("be.visible");
         cy.wait("@getAlbumsDelay");
         cy.contains("Loading").should("not.exist");
+    });
+    it.only("No release date", () => {
+        cy.intercept("GET", "/api/albums", {
+            body: [
+                {
+                    id: 1,
+                    name: "Ripcord",
+                    author_name: "Tainy",
+                    author_id: 1
+                }
+            ]
+        }).as("getAlbums");
+        cy.visit("/");
+        cy.wait("@getAlbums");
+        cy.contains("Invalid or missing release date").should("be.visible");
     });
 });

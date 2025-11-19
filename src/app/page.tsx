@@ -3,11 +3,20 @@
 import Link from "next/link";
 import { GET } from "@/app/api/albums/route";
 import { useApi } from "@/lib/utils/useApi";
+import { th } from "@faker-js/faker";
 
 type Albums = Awaited<ReturnType<typeof GET>>;
 
 export default function Home() {
     const { data: albums, isLoading, error } = useApi<Albums>("/api/albums");
+
+    function isValidDate(v: unknown): string {
+        if (v === null || v === undefined) {
+            return "Invalid or missing release date";
+        }
+        const d = new Date(Number(v));
+        return d.toDateString();
+    }
 
     return (
         <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
@@ -34,7 +43,7 @@ export default function Home() {
                                         {album.author_name}
                                     </Link>
                                 </p>
-                                <p>Release Date: {new Date(album.release_date).toDateString()}</p>
+                                <p>Release Date: {isValidDate(album.release_date)}</p>
                                 <div className="mt-6">
                                     <Link
                                         className="btn btn-primary btn-block"
